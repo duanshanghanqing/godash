@@ -8,18 +8,25 @@ import (
 // https://www.cnblogs.com/jkko123/p/6909368.html
 
 // GetCurrentTime 获取当前时间
+
 func (g Godash) GetCurrentTime() time.Time {
 	return time.Now().In(g.TimeLocation)
 }
 
+
+
 // GetCurrentDayBegin 获取当前时间的0点
+
 func (g Godash) GetCurrentDayBegin() time.Time {
 	now := g.GetCurrentTime()
 	year, month, day := now.Date()
 	return time.Date(year, month, day, 00, 00, 00, 00, g.TimeLocation)
 }
 
+
+
 // DateEqual 比较两个时间是否是同一天
+
 func (g Godash) DateEqual(day1, day2 time.Time) bool {
 	// 放在同一个时区
 	day1 = day1.In(g.TimeLocation)
@@ -31,34 +38,50 @@ func (g Godash) DateEqual(day1, day2 time.Time) bool {
 	return y1 == y2 && m1 == m2 && d1 == d2
 }
 
+
+
 // Time2TimeStampMill 获取指定时间的毫秒级别的时间戳
+
 func (g Godash) Time2TimeStampMill(t time.Time) int64 {
 	return t.UnixNano() / 1e6 // 1e6 = 1000000
 }
 
+
+
 // 时间戳转时间
 
-// Second2Time 秒 -> time.Time
+// Second2Time second -> 秒 -> time.Time
+
 func (g Godash) Second2Time(s int64) time.Time {
 	return time.Unix(s, 0).In(g.TimeLocation)
 }
 
+
+
 // Millisecond2Time 毫秒 -> time.Time
+
 func (g Godash) Millisecond2Time(s int64) time.Time {
 	// 1 毫秒=1000000 纳秒
 	return time.Unix(0, s*1e6).In(g.TimeLocation)
 }
 
+
+
 // Microsecond2Time 微秒 -> time.Time
+
 func (g Godash) Microsecond2Time(s int64) time.Time {
 	//1 微秒 = 1000 纳秒
 	return time.Unix(0, s*1e3).In(g.TimeLocation)
 }
 
+
+
 // Nanosecond2Time 纳秒 -> time.Time
+
 func (g Godash) Nanosecond2Time(s int64) time.Time {
 	return time.Unix(0, s).In(g.TimeLocation)
 }
+
 
 
 const (
@@ -75,7 +98,10 @@ const (
 	TWITTERTIME = "2006-01-02T15:04:05Z"
 )
 
+
+
 // TimeStr2Time 字符串格式时间 转 time.Time
+
 func (g Godash) TimeStr2Time(timeStr string) (time.Time, error) {
 	// 可能的转换格式
 	useFormat := []string{
@@ -112,6 +138,8 @@ func (g Godash) TimeStr2Time(timeStr string) (time.Time, error) {
 	}
 	return t, nil
 }
+
+
 
 func (g Godash) getTimeDefault() time.Time {
 	t, _ := time.ParseInLocation("2006-01-02 15:04:05", "", g.TimeLocation)
