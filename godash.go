@@ -7,13 +7,13 @@ type Config struct {
 	Layout           string
 }
 
-type godash struct {
+type Godash struct {
 	TimeLocation *time.Location
 	Layout       string
 }
 
-func New(config Config) godash {
-	g := godash{}
+func New(config Config) Godash {
+	g := Godash{}
 	// 初始化时区
 	timeLocation, err := time.LoadLocation(config.LoadLocationName)
 	if err != nil {
@@ -24,7 +24,7 @@ func New(config Config) godash {
 	return g
 }
 
-func Default() godash {
+func Default() Godash {
 	config := Config{
 		LoadLocationName: "Asia/Shanghai",
 		Layout:           "2006-01-02 15:04:05",

@@ -6,7 +6,7 @@ import (
 )
 
 // EntityMapping p_接收的是实体，f_ 接收的是指针
-func (g godash) EntityMapping(t interface{}, p interface{}) {
+func (g Godash) EntityMapping(t interface{}, p interface{}) {
 	getType, getValue := reflect.TypeOf(t), reflect.ValueOf(t)
 	_, setValue := reflect.TypeOf(p), reflect.ValueOf(p)
 	v := setValue.Elem()
