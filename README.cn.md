@@ -56,7 +56,7 @@
 
 ## 实例映射
     
-####支持16种转换
+#### 支持16种转换
 
 	*time.Time -> int64
 	*time.Time -> time.Time
@@ -78,7 +78,7 @@
 	string -> time.Time
 	string -> string
 
-####例子
+#### 例子
 
     g := Default()
 
