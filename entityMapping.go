@@ -110,7 +110,9 @@ func (g Godash) EntityMapping(l interface{}, r interface{}) {
 						v.FieldByName(field.Name).Set(getValue.Elem().Field(i))
 					}
 				} else {
-					v.FieldByName(field.Name).Set(getValue.Elem().Field(i))
+					if rightTimeType == "string" {
+						v.FieldByName(field.Name).Set(getValue.Elem().Field(i))
+					}
 				}
 				break
 			default:
@@ -203,7 +205,9 @@ func (g Godash) EntityMapping(l interface{}, r interface{}) {
 					v.FieldByName(field.Name).Set(getValue.Field(i))
 				}
 			} else {
-				v.FieldByName(field.Name).Set(getValue.Field(i))
+				if rightTimeType == "string" {
+					v.FieldByName(field.Name).Set(getValue.Field(i))
+				}
 			}
 			break
 		default:
