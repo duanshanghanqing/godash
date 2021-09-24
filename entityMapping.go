@@ -94,24 +94,21 @@ func (g Godash) EntityMapping(l interface{}, r interface{}) {
 				}
 				break
 			case "string": // 字符串时间转换成 int64 毫秒级别， *time.Time， time.Time
-				_time, _timeErr := g.TimeStr2Time(getValue.Elem().Field(i).String())
-				// 说明 字符串日期转换成功
-				if _timeErr == nil {
-					if rightTimeType == "int64" {
-						// 转为毫秒
-						int64Time := _time.UnixNano() / 1e6
-						v.FieldByName(field.Name).SetInt(int64Time)
-					} else if rightTimeType == "*time.Time" {
-						v.FieldByName(field.Name).Set(reflect.ValueOf(&_time))
-					} else if rightTimeType == "time.Time" {
-						v.FieldByName(field.Name).Set(reflect.ValueOf(_time))
-					} else if rightTimeType == "string" {
-						// 两侧类型相同
-						v.FieldByName(field.Name).Set(getValue.Elem().Field(i))
-					}
+				if rightTimeType == "string" {
+					v.FieldByName(field.Name).Set(getValue.Elem().Field(i))
 				} else {
-					if rightTimeType == "string" {
-						v.FieldByName(field.Name).Set(getValue.Elem().Field(i))
+					// 说明 字符串日期转换成功
+					_time, _timeErr := g.TimeStr2Time(getValue.Elem().Field(i).String())
+					if _timeErr == nil {
+						if rightTimeType == "int64" {
+							// 转为毫秒
+							int64Time := _time.UnixNano() / 1e6
+							v.FieldByName(field.Name).SetInt(int64Time)
+						} else if rightTimeType == "*time.Time" {
+							v.FieldByName(field.Name).Set(reflect.ValueOf(&_time))
+						} else if rightTimeType == "time.Time" {
+							v.FieldByName(field.Name).Set(reflect.ValueOf(_time))
+						}
 					}
 				}
 				break
@@ -191,22 +188,20 @@ func (g Godash) EntityMapping(l interface{}, r interface{}) {
 			}
 			break
 		case "string": // 字符串时间转换成 int64 毫秒级别， *time.Time， time.Time
-			_time, _timeErr := g.TimeStr2Time(getValue.Field(i).String())
-			// 说明 字符串日期转换成功
-			if _timeErr == nil {
-				if rightTimeType == "int64" {
-					// 转为毫秒
-					v.FieldByName(field.Name).SetInt(_time.UnixNano() / 1e6)
-				} else if rightTimeType == "*time.Time" {
-					v.FieldByName(field.Name).Set(reflect.ValueOf(&_time))
-				} else if rightTimeType == "time.Time" {
-					v.FieldByName(field.Name).Set(reflect.ValueOf(_time))
-				} else if rightTimeType == "string" {
-					v.FieldByName(field.Name).Set(getValue.Field(i))
-				}
+			if rightTimeType == "string" {
+				v.FieldByName(field.Name).Set(getValue.Field(i))
 			} else {
-				if rightTimeType == "string" {
-					v.FieldByName(field.Name).Set(getValue.Field(i))
+				_time, _timeErr := g.TimeStr2Time(getValue.Field(i).String())
+				// 说明 字符串日期转换成功
+				if _timeErr == nil {
+					if rightTimeType == "int64" {
+						// 转为毫秒
+						v.FieldByName(field.Name).SetInt(_time.UnixNano() / 1e6)
+					} else if rightTimeType == "*time.Time" {
+						v.FieldByName(field.Name).Set(reflect.ValueOf(&_time))
+					} else if rightTimeType == "time.Time" {
+						v.FieldByName(field.Name).Set(reflect.ValueOf(_time))
+					}
 				}
 			}
 			break
