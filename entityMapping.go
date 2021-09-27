@@ -113,7 +113,10 @@ func (g Godash) EntityMapping(l interface{}, r interface{}) {
 				}
 				break
 			default:
-				v.FieldByName(field.Name).Set(getValue.Elem().Field(i))
+				// 两侧数据类型一至才可以映射
+				if leftTimeType == rightTimeType {
+					v.FieldByName(field.Name).Set(getValue.Elem().Field(i))
+				}
 				break
 			}
 		}
@@ -206,7 +209,10 @@ func (g Godash) EntityMapping(l interface{}, r interface{}) {
 			}
 			break
 		default:
-			v.FieldByName(field.Name).Set(getValue.Field(i))
+			// 两侧数据类型一至才可以映射
+			if leftTimeType == rightTimeType {
+				v.FieldByName(field.Name).Set(getValue.Field(i))
+			}
 			break
 		}
 	}
