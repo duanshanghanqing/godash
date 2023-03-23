@@ -46,7 +46,7 @@ func TimeStrToTime(timeStr string) (time.Time, error) {
 	return t, nil
 }
 
-func mapStruct(l interface{}, r interface{}, opt Option) {
+func mappingStruct(l interface{}, r interface{}, opt Option) {
 	getType, getValue := reflect.TypeOf(l), reflect.ValueOf(l)
 	_, setValue := reflect.TypeOf(r), reflect.ValueOf(r)
 
@@ -242,10 +242,10 @@ type Option struct {
 	FormatLayout string
 }
 
-func MapStruct(l interface{}, r interface{}) {
-	mapStruct(l, r, Option{FormatLayout: time.RFC3339Nano})
+func MappingStruct(l interface{}, r interface{}) {
+	mappingStruct(l, r, Option{FormatLayout: time.RFC3339Nano})
 }
 
-func MapStructOption(l interface{}, r interface{}, opt Option) {
-	mapStruct(l, r, opt)
+func MappingStructOption(l interface{}, r interface{}, opt Option) {
+	mappingStruct(l, r, opt)
 }

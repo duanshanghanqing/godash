@@ -163,7 +163,7 @@ func init() {
 	}
 }
 
-// go test -v mapStruct_test.go mapStruct.go
+// go test -v mappingStruct_test.go mappingStruct.go
 
 // *time.Time -> string
 // *time.Time -> *time.Time
@@ -174,11 +174,11 @@ func Test_mapStruct_pointerTimeToString(t *testing.T) {
 	t.Log(pointerTimeSource)
 
 	var dest1 StringDestination
-	MapStruct(&pointerTimeSource, &dest1)
+	MappingStruct(&pointerTimeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 StringDestination
-	MapStruct(pointerTimeSource, &dest2)
+	MappingStruct(pointerTimeSource, &dest2)
 	t.Log(dest2)
 }
 
@@ -187,11 +187,11 @@ func Test_mapStruct_pointerTimeToPointerTime(t *testing.T) {
 	t.Log(pointerTimeSource)
 
 	var dest1 PointerTimeDestination
-	MapStruct(&pointerTimeSource, &dest1)
+	MappingStruct(&pointerTimeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 PointerTimeDestination
-	MapStruct(pointerTimeSource, &dest2)
+	MappingStruct(pointerTimeSource, &dest2)
 	t.Log(dest2)
 }
 
@@ -200,11 +200,11 @@ func Test_mapStruct_pointerTimeToTime(t *testing.T) {
 	t.Log(pointerTimeSource)
 
 	var dest1 TimeDestination
-	MapStruct(&pointerTimeSource, &dest1)
+	MappingStruct(&pointerTimeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 TimeDestination
-	MapStruct(pointerTimeSource, &dest2)
+	MappingStruct(pointerTimeSource, &dest2)
 	t.Log(dest2)
 }
 
@@ -219,11 +219,11 @@ func Test_mapStruct_timeToString(t *testing.T) {
 	t.Log(timeSource)
 
 	var dest1 StringDestination
-	MapStruct(&timeSource, &dest1)
+	MappingStruct(&timeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 StringDestination
-	MapStruct(timeSource, &dest2)
+	MappingStruct(timeSource, &dest2)
 	t.Log(dest2)
 }
 
@@ -232,11 +232,11 @@ func Test_mapStruct_timeToPointerTime(t *testing.T) {
 	t.Log(timeSource)
 
 	var dest1 PointerTimeDestination
-	MapStruct(&timeSource, &dest1)
+	MappingStruct(&timeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 PointerTimeDestination
-	MapStruct(timeSource, &dest2)
+	MappingStruct(timeSource, &dest2)
 	t.Log(dest2)
 }
 
@@ -245,11 +245,11 @@ func Test_mapStruct_timeToTime(t *testing.T) {
 	t.Log(timeSource)
 
 	var dest1 TimeDestination
-	MapStruct(&timeSource, &dest1)
+	MappingStruct(&timeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 TimeDestination
-	MapStruct(timeSource, &dest2)
+	MappingStruct(timeSource, &dest2)
 	t.Log(dest2)
 }
 
@@ -264,11 +264,11 @@ func Test_mapStruct_stringTimeToString(t *testing.T) {
 	t.Log(stringTimeSource)
 
 	var dest1 StringDestination
-	MapStruct(&stringTimeSource, &dest1)
+	MappingStruct(&stringTimeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 StringDestination
-	MapStruct(stringTimeSource, &dest2)
+	MappingStruct(stringTimeSource, &dest2)
 	t.Log(dest2)
 }
 
@@ -277,11 +277,11 @@ func Test_mapStruct_stringTimeToPointerTime(t *testing.T) {
 	t.Log(stringTimeSource)
 
 	var dest1 PointerTimeDestination
-	MapStruct(&stringTimeSource, &dest1)
+	MappingStruct(&stringTimeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 PointerTimeDestination
-	MapStruct(stringTimeSource, &dest2)
+	MappingStruct(stringTimeSource, &dest2)
 	t.Log(dest2)
 }
 
@@ -290,10 +290,10 @@ func Test_mapStruct_stringTimeToTime(t *testing.T) {
 	t.Log(stringTimeSource)
 
 	var dest1 TimeDestination
-	MapStruct(&stringTimeSource, &dest1)
+	MappingStruct(&stringTimeSource, &dest1)
 	t.Log(dest1)
 
 	var dest2 TimeDestination
-	MapStruct(stringTimeSource, &dest2)
+	MappingStruct(stringTimeSource, &dest2)
 	t.Log(dest2)
 }

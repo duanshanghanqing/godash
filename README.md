@@ -43,20 +43,20 @@ English | [简体中文](https://github.com/duanshanghanqing/godash/blob/master/
         }
 
         var stringDestination StringDestination
-        godash.MapStruct(&timeSource, &stringDestination)
+        godash.MappingStruct(&timeSource, &stringDestination)
         fmt.Println(stringDestination)
 
         var stringDestinationFormat StringDestination
-        godash.MapStructOption(&timeSource, &stringDestinationFormat, godash.Option{ FormatLayout: time.DateTime })
+        godash.MappingStructOption(&timeSource, &stringDestinationFormat, godash.Option{ FormatLayout: time.DateTime })
         fmt.Println(stringDestinationFormat)
 
         var timeDestination TimeDestination
-        godash.MapStruct(&timeSource, &timeDestination)
+        godash.MappingStruct(&timeSource, &timeDestination)
         fmt.Println(timeDestination)
     }
 
 # Function Introduction
-## MapStruct 
+## MappingStruct 
 > mapping time type support
 
     *time.Time -> string

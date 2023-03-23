@@ -43,20 +43,20 @@
         }
 
         var stringDestination StringDestination
-        godash.MapStruct(&timeSource, &stringDestination)
+        godash.MappingStruct(&timeSource, &stringDestination)
         fmt.Println(stringDestination)
 
         var stringDestinationFormat StringDestination
-        godash.MapStructOption(&timeSource, &stringDestinationFormat, godash.Option{ FormatLayout: time.DateTime })
+        godash.MappingStructOption(&timeSource, &stringDestinationFormat, godash.Option{ FormatLayout: time.DateTime })
         fmt.Println(stringDestinationFormat)
 
         var timeDestination TimeDestination
-        godash.MapStruct(&timeSource, &timeDestination)
+        godash.MappingStruct(&timeSource, &timeDestination)
         fmt.Println(timeDestination)
     }
 
 # 函数介绍
-## MapStruct
+## MappingStruct
 > 映射时间类型支持
 
     *time.Time -> string
