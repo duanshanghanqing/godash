@@ -14,15 +14,16 @@ type PointerTimeSource struct {
 	Age       int
 	Is        bool
 	Time      *time.Time
-	testMap   map[string]string
-	testSlice []string
-	arr       [10]float32
+	TestMap   map[string]string
+	TestSlice []string
+	Arr       [10]float32
 	User
-	user      User
-	user2     *User
-	myChannel chan User
-	getUser   func()
-	typeName  interface{}
+	User1     User
+	User2     *User
+	MyChannel chan User
+	GetUser   func()
+	TypeName  interface{}
+	Price     string
 }
 
 type TimeSource struct {
@@ -30,15 +31,16 @@ type TimeSource struct {
 	Age       int
 	Is        bool
 	Time      time.Time
-	testMap   map[string]string
-	testSlice []string
-	arr       [10]float32
+	TestMap   map[string]string
+	TestSlice []string
+	Arr       [10]float32
 	User
-	user      User
-	user2     *User
-	myChannel chan User
-	getUser   func()
-	typeName  interface{}
+	User1     User
+	User2     *User
+	MyChannel chan User
+	GetUser   func()
+	TypeName  interface{}
+	Price     string
 }
 
 type StringTimeSource struct {
@@ -46,15 +48,16 @@ type StringTimeSource struct {
 	Age       int
 	Is        bool
 	Time      string
-	testMap   map[string]string
-	testSlice []string
-	arr       [10]float32
+	TestMap   map[string]string
+	TestSlice []string
+	Arr       [10]float32
 	User
-	user      User
-	user2     *User
-	myChannel chan User
-	getUser   func()
-	typeName  interface{}
+	User1     User
+	User2     *User
+	MyChannel chan User
+	GetUser   func()
+	TypeName  interface{}
+	Price     string
 }
 
 var pointerTimeSource PointerTimeSource
@@ -66,15 +69,16 @@ type StringDestination struct {
 	Age       int
 	Is        bool
 	Time      string
-	testMap   map[string]string
-	testSlice []string
-	arr       [10]float32
+	TestMap   map[string]string
+	TestSlice []string
+	Arr       [10]float32
 	User
-	user      User
-	user2     *User
-	myChannel chan User
-	getUser   func()
-	typeName  interface{}
+	User1     User
+	User2     *User
+	MyChannel chan User
+	GetUser   func()
+	TypeName  interface{}
+	Price     string
 }
 
 type TimeDestination struct {
@@ -82,15 +86,16 @@ type TimeDestination struct {
 	Age       int
 	Is        bool
 	Time      time.Time
-	testMap   map[string]string
-	testSlice []string
-	arr       [10]float32
+	TestMap   map[string]string
+	TestSlice []string
+	Arr       [10]float32
 	User
-	user      User
-	user2     *User
-	myChannel chan User
-	getUser   func()
-	typeName  interface{}
+	User1     User
+	User2     *User
+	MyChannel chan User
+	GetUser   func()
+	TypeName  interface{}
+	Price     string
 }
 
 type PointerTimeDestination struct {
@@ -98,15 +103,16 @@ type PointerTimeDestination struct {
 	Age       int
 	Is        bool
 	Time      *time.Time
-	testMap   map[string]string
-	testSlice []string
-	arr       [10]float32
+	TestMap   map[string]string
+	TestSlice []string
+	Arr       [10]float32
 	User
-	user      User
-	user2     *User
-	myChannel chan User
-	getUser   func()
-	typeName  interface{}
+	User1     User
+	User2     *User
+	MyChannel chan User
+	GetUser   func()
+	TypeName  interface{}
+	Price     string
 }
 
 func init() {
@@ -125,13 +131,13 @@ func init() {
 		Age:       30,
 		Is:        true,
 		Time:      &tt,
-		testMap:   testMap,
+		TestMap:   testMap,
 		User:      User{Height: 100},
-		user:      User{Height: 110},
-		user2:     &User{Height: 120},
-		myChannel: myChannel,
-		getUser:   func() {},
-		typeName:  1,
+		User1:     User{Height: 110},
+		User2:     &User{Height: 120},
+		MyChannel: myChannel,
+		GetUser:   func() {},
+		TypeName:  1,
 	}
 
 	timeSource = TimeSource{
@@ -139,13 +145,13 @@ func init() {
 		Age:       30,
 		Is:        true,
 		Time:      tt,
-		testMap:   testMap,
+		TestMap:   testMap,
 		User:      User{Height: 100},
-		user:      User{Height: 110},
-		user2:     &User{Height: 120},
-		myChannel: myChannel,
-		getUser:   func() {},
-		typeName:  1,
+		User1:     User{Height: 110},
+		User2:     &User{Height: 120},
+		MyChannel: myChannel,
+		GetUser:   func() {},
+		TypeName:  1,
 	}
 
 	stringTimeSource = StringTimeSource{
@@ -153,13 +159,13 @@ func init() {
 		Age:       30,
 		Is:        true,
 		Time:      "2023-03-23T14:39:14.8562572+08:00",
-		testMap:   testMap,
+		TestMap:   testMap,
 		User:      User{Height: 100},
-		user:      User{Height: 110},
-		user2:     &User{Height: 120},
-		myChannel: myChannel,
-		getUser:   func() {},
-		typeName:  1,
+		User1:     User{Height: 110},
+		User2:     &User{Height: 120},
+		MyChannel: myChannel,
+		GetUser:   func() {},
+		TypeName:  1,
 	}
 }
 
@@ -169,7 +175,7 @@ func init() {
 // *time.Time -> *time.Time
 // *time.Time -> time.Time
 
-// go test -v -run Test_mapStruct_pointerTimeToString mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_pointerTimeToString mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_pointerTimeToString(t *testing.T) {
 	t.Log(pointerTimeSource)
 
@@ -182,7 +188,7 @@ func Test_mapStruct_pointerTimeToString(t *testing.T) {
 	t.Log(dest2)
 }
 
-// go test -v -run Test_mapStruct_pointerTimeToPointerTime mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_pointerTimeToPointerTime mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_pointerTimeToPointerTime(t *testing.T) {
 	t.Log(pointerTimeSource)
 
@@ -195,7 +201,7 @@ func Test_mapStruct_pointerTimeToPointerTime(t *testing.T) {
 	t.Log(dest2)
 }
 
-// go test -v -run Test_mapStruct_pointerTimeToTime mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_pointerTimeToTime mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_pointerTimeToTime(t *testing.T) {
 	t.Log(pointerTimeSource)
 
@@ -214,7 +220,7 @@ func Test_mapStruct_pointerTimeToTime(t *testing.T) {
 // time.Time -> *time.Time
 // time.Time -> time.Time
 
-// go test -v -run Test_mapStruct_timeToString mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_timeToString mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_timeToString(t *testing.T) {
 	t.Log(timeSource)
 
@@ -227,7 +233,7 @@ func Test_mapStruct_timeToString(t *testing.T) {
 	t.Log(dest2)
 }
 
-// go test -v -run Test_mapStruct_timeToPointerTime mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_timeToPointerTime mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_timeToPointerTime(t *testing.T) {
 	t.Log(timeSource)
 
@@ -240,7 +246,7 @@ func Test_mapStruct_timeToPointerTime(t *testing.T) {
 	t.Log(dest2)
 }
 
-// go test -v -run Test_mapStruct_timeToTime mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_timeToTime mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_timeToTime(t *testing.T) {
 	t.Log(timeSource)
 
@@ -259,7 +265,7 @@ func Test_mapStruct_timeToTime(t *testing.T) {
 // string -> *time.Time
 // string -> time.Time
 
-// go test -v -run Test_mapStruct_stringTimeToString mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_stringTimeToString mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_stringTimeToString(t *testing.T) {
 	t.Log(stringTimeSource)
 
@@ -272,7 +278,7 @@ func Test_mapStruct_stringTimeToString(t *testing.T) {
 	t.Log(dest2)
 }
 
-// go test -v -run Test_mapStruct_stringTimeToPointerTime mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_stringTimeToPointerTime mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_stringTimeToPointerTime(t *testing.T) {
 	t.Log(stringTimeSource)
 
@@ -285,7 +291,7 @@ func Test_mapStruct_stringTimeToPointerTime(t *testing.T) {
 	t.Log(dest2)
 }
 
-// go test -v -run Test_mapStruct_stringTimeToTime mapStruct_test.go mapStruct.go
+// go test -v -run Test_mapStruct_stringTimeToTime mappingStruct_test.go mappingStruct.go
 func Test_mapStruct_stringTimeToTime(t *testing.T) {
 	t.Log(stringTimeSource)
 
@@ -296,4 +302,30 @@ func Test_mapStruct_stringTimeToTime(t *testing.T) {
 	var dest2 TimeDestination
 	MappingStruct(stringTimeSource, &dest2)
 	t.Log(dest2)
+}
+
+// ----------------------------------------------------------------------------------------
+
+type GoodsSource struct {
+	Uint   string
+	Uint8  string
+	Uint16 string
+}
+
+type GoodsDestination struct {
+	Uint   uint
+	Uint8  uint8
+	Uint16 uint16
+}
+
+// go test -v -run Test_mapStruct_stringToInt mappingStruct_test.go mappingStruct.go
+func Test_mapStruct_stringToInt(t *testing.T) {
+	var goodsSource GoodsSource
+	goodsSource.Uint = "1"
+	goodsSource.Uint8 = "2"
+	goodsSource.Uint16 = "3"
+
+	var goodsDestination GoodsDestination
+	MappingStruct(goodsSource, &goodsDestination)
+	t.Log(goodsDestination)
 }

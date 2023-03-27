@@ -2,6 +2,7 @@ package godash
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"time"
 )
@@ -128,6 +129,9 @@ func mappingStruct(l interface{}, r interface{}, opt Option) {
 				} else if rightFieldType == "time.Time" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(_time))
 				}
+
+				// string -> 数字类型 = uint8 | uint16 | uint32 | uint64 | int8 | int16 | int32 | int64, 其他数字类型 = byte | rune | uint | int | uintptr
+				fmt.Println(rightFieldType)
 				break
 			default:
 				// 两侧数据类型一至才可以映射
@@ -218,6 +222,9 @@ func mappingStruct(l interface{}, r interface{}, opt Option) {
 				} else if rightFieldType == "time.Time" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(_time))
 				}
+
+				// string -> 数字类型 = uint8 | uint16 | uint32 | uint64 | int8 | int16 | int32 | int64, 其他数字类型 = byte | rune | uint | int | uintptr
+				fmt.Println(rightFieldType)
 				break
 			default:
 				// 两侧数据类型一至才可以映射
