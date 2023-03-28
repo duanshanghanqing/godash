@@ -318,51 +318,81 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 
 				if leftFieldType == "*uint" {
 					num := leftValue.Interface().(*uint)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*uint8" {
 					num := leftValue.Interface().(*uint8)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*uint16" {
 					num := leftValue.Interface().(*uint16)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*uint32" {
 					num := leftValue.Interface().(*uint32)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*uint64" {
 					num := leftValue.Interface().(*uint64)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int" {
 					num := leftValue.Interface().(*int)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int8" {
 					num := leftValue.Interface().(*int8)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int16" {
 					num := leftValue.Interface().(*int16)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int32" {
 					num := leftValue.Interface().(*int32)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int64" {
 					num := leftValue.Interface().(*int64)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
@@ -633,51 +663,81 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 
 				if leftFieldType == "*uint" {
 					num := leftValue.Interface().(*uint)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*uint8" {
 					num := leftValue.Interface().(*uint8)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*uint16" {
 					num := leftValue.Interface().(*uint16)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*uint32" {
 					num := leftValue.Interface().(*uint32)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*uint64" {
 					num := leftValue.Interface().(*uint64)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int" {
 					num := leftValue.Interface().(*int)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int8" {
 					num := leftValue.Interface().(*int8)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int16" {
 					num := leftValue.Interface().(*int16)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int32" {
 					num := leftValue.Interface().(*int32)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
 				if leftFieldType == "*int64" {
 					num := leftValue.Interface().(*int64)
+					if num == nil {
+						continue
+					}
 					str := fmt.Sprintf("%d", *num)
 					numberToString(str)
 				}
