@@ -310,22 +310,158 @@ type GoodsSource struct {
 	Uint   string
 	Uint8  string
 	Uint16 string
+	Uint32 string
+	Uint64 string
+	Int    string
+	Int8   string
+	Int16  string
+	Int32  string
+	Int64  string
+}
+
+type GoodsPointerSource struct {
+	Uint   *string
+	Uint8  *string
+	Uint16 *string
+	Uint32 *string
+	Uint64 *string
+	Int    *string
+	Int8   *string
+	Int16  *string
+	Int32  *string
+	Int64  *string
 }
 
 type GoodsDestination struct {
 	Uint   uint
 	Uint8  uint8
 	Uint16 uint16
+	Uint32 uint32
+	Uint64 uint64
+	Int    int
+	Int8   int8
+	Int16  int16
+	Int32  int32
+	Int64  int64
 }
 
-// go test -v -run Test_mapStruct_stringToInt mappingStruct_test.go mappingStruct.go
-func Test_mapStruct_stringToInt(t *testing.T) {
+type GoodsPointerDestination struct {
+	Uint   *uint
+	Uint8  *uint8
+	Uint16 *uint16
+	Uint32 *uint32
+	Uint64 *uint64
+	Int    *int
+	Int8   *int8
+	Int16  *int16
+	Int32  *int32
+	Int64  *int64
+}
+
+// uint | uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
+// go test -v -run Test_mapStruct_stringPointerToNumber mappingStruct_test.go mappingStruct.go
+func Test_mapStruct_stringPointerToNumber(t *testing.T) {
+	var goodsSource GoodsPointerSource
+	Uint := "1"
+	Uint8 := "2"
+	Uint16 := "3"
+	Uint32 := "4"
+	Uint64 := "5"
+	Int := "11"
+	Int8 := "12"
+	Int16 := "13"
+	Int32 := "14"
+	Int64 := "15"
+	goodsSource.Uint = &Uint
+	goodsSource.Uint8 = &Uint8
+	goodsSource.Uint16 = &Uint16
+	goodsSource.Uint32 = &Uint32
+	goodsSource.Uint64 = &Uint64
+	goodsSource.Int = &Int
+	goodsSource.Int8 = &Int8
+	goodsSource.Int16 = &Int16
+	goodsSource.Int32 = &Int32
+	goodsSource.Int64 = &Int64
+
+	var goodsDestination1 GoodsDestination
+	MappingStruct(goodsSource, &goodsDestination1)
+	t.Log(goodsDestination1)
+
+	var goodsDestination2 GoodsDestination
+	MappingStruct(&goodsSource, &goodsDestination2)
+	t.Log(goodsDestination2)
+}
+
+// go test -v -run Test_mapStruct_stringToNumber mappingStruct_test.go mappingStruct.go
+func Test_mapStruct_stringToNumber(t *testing.T) {
 	var goodsSource GoodsSource
 	goodsSource.Uint = "1"
 	goodsSource.Uint8 = "2"
 	goodsSource.Uint16 = "3"
+	goodsSource.Uint32 = "4"
+	goodsSource.Uint64 = "5"
+	goodsSource.Int = "11"
+	goodsSource.Int8 = "12"
+	goodsSource.Int16 = "13"
+	goodsSource.Int32 = "14"
+	goodsSource.Int64 = "15"
 
-	var goodsDestination GoodsDestination
-	MappingStruct(goodsSource, &goodsDestination)
-	t.Log(goodsDestination)
+	var goodsDestination1 GoodsDestination
+	MappingStruct(goodsSource, &goodsDestination1)
+	t.Log(goodsDestination1)
+
+	var goodsDestination2 GoodsDestination
+	MappingStruct(&goodsSource, &goodsDestination2)
+	t.Log(goodsDestination2)
+}
+
+// go test -v -run Test_mapStruct_numberToString mappingStruct_test.go mappingStruct.go
+func Test_mapStruct_numberToString(t *testing.T) {
+	var goodsDestination1 GoodsDestination
+	goodsDestination1.Uint = 1
+	goodsDestination1.Uint8 = 2
+	goodsDestination1.Uint16 = 3
+	goodsDestination1.Uint32 = 4
+	goodsDestination1.Uint64 = 5
+	goodsDestination1.Int = 11
+	goodsDestination1.Int8 = 12
+	goodsDestination1.Int16 = 13
+	goodsDestination1.Int32 = 14
+	goodsDestination1.Int64 = 15
+	var goodsSource GoodsSource
+	MappingStruct(&goodsDestination1, &goodsSource)
+	t.Log(goodsSource)
+}
+
+// go test -v -run Test_mapStruct_numberPointerToString mappingStruct_test.go mappingStruct.go
+func Test_mapStruct_numberPointerToString(t *testing.T) {
+	var goodsPointerDestination GoodsPointerDestination
+	var Uint uint = 1
+	var Uint8 uint8 = 2
+	var Uint16 uint16 = 3
+	var Uint32 uint32 = 4
+	var Uint64 uint64 = 5
+	var Int = 11
+	var Int8 int8 = 12
+	var Int16 int16 = 13
+	var Int32 int32 = 14
+	var Int64 int64 = 15
+	goodsPointerDestination.Uint = &Uint
+	goodsPointerDestination.Uint8 = &Uint8
+	goodsPointerDestination.Uint16 = &Uint16
+	goodsPointerDestination.Uint32 = &Uint32
+	goodsPointerDestination.Uint64 = &Uint64
+	goodsPointerDestination.Int = &Int
+	goodsPointerDestination.Int8 = &Int8
+	goodsPointerDestination.Int16 = &Int16
+	goodsPointerDestination.Int32 = &Int32
+	goodsPointerDestination.Int64 = &Int64
+
+	var goodsSource1 GoodsSource
+	MappingStruct(&goodsPointerDestination, &goodsSource1)
+	t.Log(goodsSource1)
+
+	var goodsSource2 GoodsSource
+	MappingStruct(goodsPointerDestination, &goodsSource2)
+	t.Log(goodsSource2)
 }

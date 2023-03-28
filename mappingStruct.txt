@@ -91,10 +91,14 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 			// 右侧类型
 			rightFieldType := rightField.Type().String()
 
-			var stringToNumber = func(str string) {
-				num, err := strconv.ParseUint(str, 10, 64)
-				if err != nil {
-					return
+			var stringToNumber = func(str string) error {
+				var num uint64
+				if str != "" {
+					_num, err := strconv.ParseUint(str, 10, 64)
+					if err != nil {
+						return err
+					}
+					num = _num
 				}
 
 				if rightFieldType == "uint" {
@@ -166,6 +170,7 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 					t := int64(num)
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(t))
 				}
+				return nil
 			}
 
 			switch leftFieldType {
@@ -208,24 +213,17 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 					v.FieldByName(leftField.Name).Set(leftValue)
 				}
 				_time := leftValue.Interface().(time.Time)
+				if rightFieldType == "string" {
+					v.FieldByName(leftField.Name).SetString(_time.Format(opt.FormatLayout))
+				}
 				if rightFieldType == "*time.Time" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&_time))
-				}
-				if rightFieldType == "string" {
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(_time.Format(opt.FormatLayout)))
-				}
-				if rightFieldType == "*string" {
-					t := _time.Format(opt.FormatLayout)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
 				}
 			case "*string":
 				// *string -> *string
 				// *string -> string
 				// *string -> *time.Time
 				// *string -> time.Time
-
-				// *string -> uint| uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
-				// *string -> *uint| *uint8 | *uint16 | *uint32 | *uint64 | *int | *int8 | *int16 | *int32 | *int64
 				if rightFieldType == "*string" {
 					v.FieldByName(leftField.Name).Set(leftValue)
 				}
@@ -252,15 +250,16 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(_time))
 				}
 
-				stringToNumber(*str)
+				// string -> 数字类型 = uint| uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
+				err := stringToNumber(*str)
+				if err != nil {
+					continue
+				}
 			case "string":
 				// string -> string
 				// string -> *string
 				// string -> *time.Time
 				// string -> time.Time
-
-				// string -> uint| uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
-				// string -> *uint| *uint8 | *uint16 | *uint32 | *uint64 | *int | *int8 | *int16 | *int32 | *int64
 				if rightFieldType == "string" {
 					v.FieldByName(leftField.Name).Set(leftValue)
 				}
@@ -283,11 +282,13 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(_time))
 				}
 
-				stringToNumber(leftValue.String())
+				// string -> 数字类型 = uint| uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
+				err := stringToNumber(leftValue.String())
+				if err != nil {
+					continue
+				}
 			case "uint", "uint8", "uint16", "uint32", "uint64", "int", "int8", "int16", "int32", "int64":
-				// number -> number
-				// number -> string
-				// number -> *string
+				// 数值 -> 数值
 				if leftFieldType == rightFieldType {
 					v.FieldByName(leftField.Name).Set(leftValue)
 				}
@@ -298,73 +299,6 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 				if rightFieldType == "*string" {
 					str := fmt.Sprintf("%d", leftValue.Interface())
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
-				}
-			case "*uint", "*uint8", "*uint16", "*uint32", "*uint64", "*int", "*int8", "*int16", "*int32", "*int64":
-				// *number -> *number
-				// *number -> string
-				// *number -> *string
-				if leftFieldType == rightFieldType {
-					v.FieldByName(leftField.Name).Set(leftValue)
-				}
-
-				var numberToString = func(str string) {
-					if rightFieldType == "string" {
-						v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
-					}
-					if rightFieldType == "*string" {
-						v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
-					}
-				}
-
-				if leftFieldType == "*uint" {
-					num := leftValue.Interface().(*uint)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*uint8" {
-					num := leftValue.Interface().(*uint8)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*uint16" {
-					num := leftValue.Interface().(*uint16)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*uint32" {
-					num := leftValue.Interface().(*uint32)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*uint64" {
-					num := leftValue.Interface().(*uint64)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int" {
-					num := leftValue.Interface().(*int)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int8" {
-					num := leftValue.Interface().(*int8)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int16" {
-					num := leftValue.Interface().(*int16)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int32" {
-					num := leftValue.Interface().(*int32)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int64" {
-					num := leftValue.Interface().(*int64)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
 				}
 			default:
 				// 两侧数据类型一至才可以映射
@@ -407,98 +341,62 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 			// 右侧类型
 			rightFieldType := v.FieldByName(leftField.Name).Type().String()
 
-			var stringToNumber = func(str string) {
-				num, err := strconv.ParseUint(str, 10, 64)
-				if err != nil {
-					return
+			var stringToNumber = func(str string) error {
+				var num uint64
+				if str != "" {
+					_num, err := strconv.ParseUint(str, 10, 64)
+					if err != nil {
+						return err
+					}
+					num = _num
 				}
 
 				if rightFieldType == "uint" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(uint(num)))
 				}
-				if rightFieldType == "*uint" {
-					t := uint(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
-				}
 				if rightFieldType == "uint8" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(uint8(num)))
-				}
-				if rightFieldType == "*uint8" {
-					t := uint8(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
 				}
 				if rightFieldType == "uint16" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(uint16(num)))
 				}
-				if rightFieldType == "*uint16" {
-					t := uint16(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
-				}
 				if rightFieldType == "uint32" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(uint32(num)))
-				}
-				if rightFieldType == "*uint32" {
-					t := uint32(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(t))
 				}
 				if rightFieldType == "uint64" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(num))
 				}
-				if rightFieldType == "*uint64" {
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&num))
-				}
 				if rightFieldType == "int" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(int(num)))
-				}
-				if rightFieldType == "*int" {
-					t := int(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
 				}
 				if rightFieldType == "int8" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(int8(num)))
 				}
-				if rightFieldType == "*int8" {
-					t := int8(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
-				}
 				if rightFieldType == "int16" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(int16(num)))
-				}
-				if rightFieldType == "*int16" {
-					t := int16(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
 				}
 				if rightFieldType == "int32" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(int32(num)))
 				}
-				if rightFieldType == "*int32" {
-					t := int32(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
-				}
 				if rightFieldType == "int64" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(int64(num)))
 				}
-				if rightFieldType == "*int64" {
-					t := int64(num)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(t))
-				}
+				return nil
 			}
 
 			switch leftFieldType {
 			// 左侧是 *time.Time 类型
 			case "*time.Time":
+				// *time.Time -> string
 				// *time.Time -> *time.Time
 				// *time.Time -> time.Time
-				// *time.Time -> *string
-				// *time.Time -> string
-				if rightFieldType == "*time.Time" {
-					v.FieldByName(leftField.Name).Set(leftValue)
-				}
+
 				_time := leftValue.Interface().(*time.Time)
-				if _time == nil {
-					continue
-				}
-				if rightFieldType == "time.Time" {
+				if rightFieldType == "string" {
+					v.FieldByName(leftField.Name).SetString(_time.Format(opt.FormatLayout))
+				} else if rightFieldType == "*time.Time" {
+					v.FieldByName(leftField.Name).Set(leftValue)
+				} else if rightFieldType == "time.Time" {
 					// *time.Time -> string -> time.Time
 					t, err := TimeStrToTime(_time.Format(opt.FormatLayout))
 					if err != nil {
@@ -506,60 +404,36 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 					}
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(t))
 				}
-				if rightFieldType == "*string" {
-					str := _time.Format(opt.FormatLayout)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
-				}
-				if rightFieldType == "string" {
-					str := _time.Format(opt.FormatLayout)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
-				}
+			// 左侧是 time.Time 类型
 			case "time.Time":
-				// time.Time -> time.Time
-				// time.Time -> *time.Time
 				// time.Time -> string
-				// time.Time -> *string
-				if rightFieldType == "time.Time" {
+				// time.Time -> *time.Time
+				// time.Time -> time.Time
+
+				_time := leftValue.Interface().(time.Time)
+				if rightFieldType == "string" {
+					v.FieldByName(leftField.Name).SetString(_time.Format(opt.FormatLayout))
+				} else if rightFieldType == "*time.Time" {
+					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&_time))
+				} else if rightFieldType == "time.Time" {
 					v.FieldByName(leftField.Name).Set(leftValue)
 				}
-				_time := leftValue.Interface().(time.Time)
-				if rightFieldType == "*time.Time" {
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&_time))
-				}
-				if rightFieldType == "string" {
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(_time.Format(opt.FormatLayout)))
-				}
-				if rightFieldType == "*string" {
-					t := _time.Format(opt.FormatLayout)
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&t))
-				}
+			// 左侧是 *string 类型
 			case "*string":
-				// *string -> *string
 				// *string -> string
 				// *string -> *time.Time
 				// *string -> time.Time
-
-				// *string -> uint| uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
-				// *string -> *uint| *uint8 | *uint16 | *uint32 | *uint64 | *int | *int8 | *int16 | *int32 | *int64
-				if rightFieldType == "*string" {
-					v.FieldByName(leftField.Name).Set(leftValue)
-				}
-
 				str := leftValue.Interface().(*string)
-				if str == nil {
-					continue
-				}
+
 				if rightFieldType == "string" {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(*str))
-				}
-				if rightFieldType == "*time.Time" {
+				} else if rightFieldType == "*time.Time" {
 					_time, err := TimeStrToTime(*str)
 					if err != nil {
 						continue
 					}
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&_time))
-				}
-				if rightFieldType == "time.Time" {
+				} else if rightFieldType == "time.Time" {
 					_time, err := TimeStrToTime(*str)
 					if err != nil {
 						continue
@@ -567,30 +441,26 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(_time))
 				}
 
-				stringToNumber(*str)
+				// string -> 数字类型 = uint| uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
+				err := stringToNumber(*str)
+				if err != nil {
+					continue
+				}
+			// 左侧是 string 类型
 			case "string":
 				// string -> string
-				// string -> *string
 				// string -> *time.Time
 				// string -> time.Time
 
-				// string -> uint| uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
-				// string -> *uint| *uint8 | *uint16 | *uint32 | *uint64 | *int | *int8 | *int16 | *int32 | *int64
 				if rightFieldType == "string" {
 					v.FieldByName(leftField.Name).Set(leftValue)
-				}
-				if rightFieldType == "*string" {
-					str := leftValue.String()
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
-				}
-				if rightFieldType == "*time.Time" {
+				} else if rightFieldType == "*time.Time" {
 					_time, err := TimeStrToTime(leftValue.String())
 					if err != nil {
 						continue
 					}
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&_time))
-				}
-				if rightFieldType == "time.Time" {
+				} else if rightFieldType == "time.Time" {
 					_time, err := TimeStrToTime(leftValue.String())
 					if err != nil {
 						continue
@@ -598,88 +468,10 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 					v.FieldByName(leftField.Name).Set(reflect.ValueOf(_time))
 				}
 
-				stringToNumber(leftValue.String())
-			case "uint", "uint8", "uint16", "uint32", "uint64", "int", "int8", "int16", "int32", "int64":
-				// number -> number
-				// number -> string
-				// number -> *string
-				if leftFieldType == rightFieldType {
-					v.FieldByName(leftField.Name).Set(leftValue)
-				}
-				if rightFieldType == "string" {
-					str := fmt.Sprintf("%d", leftValue.Interface())
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
-				}
-				if rightFieldType == "*string" {
-					str := fmt.Sprintf("%d", leftValue.Interface())
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
-				}
-			case "*uint", "*uint8", "*uint16", "*uint32", "*uint64", "*int", "*int8", "*int16", "*int32", "*int64":
-				// *number -> *number
-				// *number -> string
-				// *number -> *string
-				if leftFieldType == rightFieldType {
-					v.FieldByName(leftField.Name).Set(leftValue)
-				}
-
-				var numberToString = func(str string) {
-					if rightFieldType == "string" {
-						v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
-					}
-					if rightFieldType == "*string" {
-						v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
-					}
-				}
-
-				if leftFieldType == "*uint" {
-					num := leftValue.Interface().(*uint)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*uint8" {
-					num := leftValue.Interface().(*uint8)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*uint16" {
-					num := leftValue.Interface().(*uint16)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*uint32" {
-					num := leftValue.Interface().(*uint32)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*uint64" {
-					num := leftValue.Interface().(*uint64)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int" {
-					num := leftValue.Interface().(*int)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int8" {
-					num := leftValue.Interface().(*int8)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int16" {
-					num := leftValue.Interface().(*int16)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int32" {
-					num := leftValue.Interface().(*int32)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
-				}
-				if leftFieldType == "*int64" {
-					num := leftValue.Interface().(*int64)
-					str := fmt.Sprintf("%d", *num)
-					numberToString(str)
+				// string -> 数字类型 = uint| uint8 | uint16 | uint32 | uint64 | int | int8 | int16 | int32 | int64
+				err := stringToNumber(leftValue.String())
+				if err != nil {
+					continue
 				}
 			default:
 				// 两侧数据类型一至才可以映射
