@@ -92,6 +92,9 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 			rightFieldType := rightField.Type().String()
 
 			var stringToNumber = func(str string) {
+				if str == "" {
+					str = "0"
+				}
 				num, err := strconv.ParseUint(str, 10, 64)
 				if err != nil {
 					return
@@ -291,14 +294,20 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 				if leftFieldType == rightFieldType {
 					v.FieldByName(leftField.Name).Set(leftValue)
 				}
-				if rightFieldType == "string" {
-					str := fmt.Sprintf("%d", leftValue.Interface())
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
+
+				var numberToString = func(str string) {
+					if str == "0" {
+						str = ""
+					}
+					if rightFieldType == "string" {
+						v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
+					}
+					if rightFieldType == "*string" {
+						v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
+					}
 				}
-				if rightFieldType == "*string" {
-					str := fmt.Sprintf("%d", leftValue.Interface())
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
-				}
+				str := fmt.Sprintf("%d", leftValue.Interface())
+				numberToString(str)
 			case "*uint", "*uint8", "*uint16", "*uint32", "*uint64", "*int", "*int8", "*int16", "*int32", "*int64":
 				// *number -> *number
 				// *number -> string
@@ -308,6 +317,9 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 				}
 
 				var numberToString = func(str string) {
+					if str == "0" {
+						str = ""
+					}
 					if rightFieldType == "string" {
 						v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
 					}
@@ -438,6 +450,9 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 			rightFieldType := v.FieldByName(leftField.Name).Type().String()
 
 			var stringToNumber = func(str string) {
+				if str == "" {
+					str = "0"
+				}
 				num, err := strconv.ParseUint(str, 10, 64)
 				if err != nil {
 					return
@@ -636,14 +651,20 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 				if leftFieldType == rightFieldType {
 					v.FieldByName(leftField.Name).Set(leftValue)
 				}
-				if rightFieldType == "string" {
-					str := fmt.Sprintf("%d", leftValue.Interface())
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
+
+				var numberToString = func(str string) {
+					if str == "0" {
+						str = ""
+					}
+					if rightFieldType == "string" {
+						v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
+					}
+					if rightFieldType == "*string" {
+						v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
+					}
 				}
-				if rightFieldType == "*string" {
-					str := fmt.Sprintf("%d", leftValue.Interface())
-					v.FieldByName(leftField.Name).Set(reflect.ValueOf(&str))
-				}
+				str := fmt.Sprintf("%d", leftValue.Interface())
+				numberToString(str)
 			case "*uint", "*uint8", "*uint16", "*uint32", "*uint64", "*int", "*int8", "*int16", "*int32", "*int64":
 				// *number -> *number
 				// *number -> string
@@ -653,6 +674,9 @@ func mappingStruct(l interface{}, r interface{}, opt Option) error {
 				}
 
 				var numberToString = func(str string) {
+					if str == "0" {
+						str = ""
+					}
 					if rightFieldType == "string" {
 						v.FieldByName(leftField.Name).Set(reflect.ValueOf(str))
 					}
