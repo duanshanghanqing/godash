@@ -70,3 +70,9 @@
 	string -> string
     string -> *time.Time
     string -> time.Time
+
+## GetFreePort
+> 获取动态端口
+
+## GetIPv4
+> 获取 IPv4 地址

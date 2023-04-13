@@ -70,3 +70,9 @@ English | [简体中文](https://github.com/duanshanghanqing/godash/blob/master/
 	string -> string
     string -> *time.Time
     string -> time.Time
+
+## GetFreePort
+> get free port
+
+## GetIPv4
+> get IPv4 address
