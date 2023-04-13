@@ -76,3 +76,6 @@ English | [简体中文](https://github.com/duanshanghanqing/godash/blob/master/
 
 ## GetIPv4
 > get IPv4 address
+
+## GetRootPath
+> Set the project root path name, run it in any directory under the project, and return the project root path address
