@@ -34,7 +34,7 @@ func TimeStrToTime(timeStr string) (time.Time, error) {
 	var ts = t.String()
 
 	if timeStr == "" {
-		return t, nil
+		return t, errors.New("empty datetime are meaningless")
 	}
 
 	for _, layout := range layouts {
